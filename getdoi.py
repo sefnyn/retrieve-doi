@@ -22,25 +22,26 @@ def getdoi(prefix):
         print('Response from API...')
         print(response.status_code)
 #        print(response.text)
-        return response
+        return response, prefix
 
     except IndexError:
         print()
 
 
-def printdoi(response):
+def printdoi(response, prefix):
     j = response.json()
     json_array = j['data']
-    print('json_array')
-#    print(json_array)
+    count = 0
     for x in json_array:
         doi = x['id']
         fh.write(doi + '\n')
+        count += 1
+    print(f"Found {count} DOIs with prefix {prefix}")
 
 def main():
     try:
-        r = getdoi(sys.argv[1])
-        printdoi(r)
+        r, p = getdoi(sys.argv[1])
+        printdoi(r, p)
 
     except IndexError:
         print("Usage:\n", sys.argv[0], "DOI_prefix")
