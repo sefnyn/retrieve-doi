@@ -8,7 +8,7 @@ Output is one file:  one DOI per line
 """
 
 import requests
-DATACITE_API = "https://api.datacite.org/dois?prefix="
+DATACITE_API = "https://api.datacite.org/dois"
 PAGE_NUMBER = "&page[size]=9999"
 data = "data.json"
 doi  = "doi"
@@ -18,7 +18,8 @@ def getdoi(prefix):
     try:
         print('Calling the DataCite API...')
         headers = {"accept": "application/vnd.api+json"}
-        response = requests.get(DATACITE_API+prefix+PAGE_NUMBER, headers=headers)
+        full_prefix = "?prefix=" + prefix
+        response = requests.get(DATACITE_API+full_prefix+PAGE_NUMBER, headers=headers)
         print('Response from API...')
         print(response.status_code)
 #        print(response.text)
@@ -36,7 +37,7 @@ def printdoi(response, prefix):
         doi = x['id']
         fh.write(doi + '\n')
         count += 1
-    print(f"Found {count} DOIs with prefix {prefix}")
+    print(f"Found {count} DOIs with prefix={prefix}")
 
 def main():
     try:
